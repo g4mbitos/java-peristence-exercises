@@ -13,6 +13,8 @@ public class CompanyDaoImpl implements CompanyDao {
 
     @Override
     public Company findByIdFetchProducts(Long id) {
-        throw new UnsupportedOperationException("I'm still not implemented!");
+
+        return entityManagerFactory.createEntityManager().find(Company.class, id);
+
     }
 }

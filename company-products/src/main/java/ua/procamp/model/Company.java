@@ -2,6 +2,7 @@ package ua.procamp.model;
 
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,16 +26,31 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(of = "id")
+@Entity
+@Table(name = "company")
 public class Company {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name", nullable = false)
     private String name;
+
+    @Setter(value = AccessLevel.PRIVATE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
     private List<Product> products = new ArrayList<>();
 
     public void addProduct(Product product) {
-        throw new UnsupportedOperationException("I'm still not implemented!");
+        product.setCompany(this);
+        products.add(product);
     }
 
     public void removeProduct(Product product) {
-        throw new UnsupportedOperationException("I'm still not implemented!");
+        if(products.contains(product)){
+            products.remove(product);
+            product.setCompany(null);
+        }
     }
 }
